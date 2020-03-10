@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  
+  <Product Id="da8a418c-a3ea-4d09-9f3a-f010f7a0c51b" Name="VueData Wix Setup Demo" Language="1033" Version="1.0.0.0" Manufacturer="VueData Technologies" UpgradeCode="c45d2b80-fc84-48a2-a29c-46e781d26461">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate />
+
+    <UIRef Id="WixUI_Common"/>
+    <UIRef Id="CustomUi"/>
+    <UIRef Id="WixUI_ErrorProgressText"/>
+
+    <Property Id="BADCMBVAL1" Value="1" />
+  </Product>
+
+  <Fragment>
+    <UI>
+      <Dialog Id="CheckBoxDlg" Width="370" Height="270" Title="VueData Wix Setup Demo" NoMinimize="yes">
+
+        <Control Id="FeatureA" Type="CheckBox" X="191" Y="50" Width="140" Height="17" Property="FEATUREA_CHECKED" CheckBoxValue="1" Text="Visual Studeo Code" Default="yes"/>
+        <Control Id="FeatureB" Type="CheckBox" X="191" Y="67" Width="140" Height="17" Property="FEATUREB_CHECKED" CheckBoxValue="1" Text="Python"  Disabled="yes" />
+        <Control Id="FeatureC" Type="CheckBox" X="191" Y="84" Width="140" Height="17" Property="FEATUREC_CHECKED" CheckBoxValue="1" Text="Docker"  Disabled="yes" />
+        <Control Id="FeatureD" Type="CheckBox" X="191" Y="101" Width="140" Height="17" Property="FEATURED_CHECKED" CheckBoxValue="1" Text="TensorFlow SDK"  Disabled="yes" />
+        <Control Id="FeatureE" Type="CheckBox" X="191" Y="118" Width="140" Height="17" Property="FEATUREE_CHECKED" CheckBoxValue="1" Text="Caffe SDK "  Disabled="yes" />
+        <Control Id="FeatureF" Type="CheckBox" X="191" Y="135" Width="140" Height="17" Property="FEATUREF_CHECKED" CheckBoxValue="1" Text="Azure IoT Tools for Visual Studio Code"  Disabled="yes" />
+        <Control Id="FeatureG" Type="CheckBox" X="191" Y="152" Width="140" Height="17" Property="FEATUREG_CHECKED" CheckBoxValue="1" Text="Docker for VS Code"  Disabled="yes" />
+        <Control Id="FeatureH" Type="CheckBox" X="191" Y="169" Width="140" Height="17" Property="FEATUREH_CHECKED" CheckBoxValue="myValue" Text="Azure ML SDK"  Disabled="yes" />
+        <Control Id="Next" Type="PushButton" Text="Next" X="254" Y="243" Height="17" Width="56">
+          <Publish Event="Remove" Value="ALL" Order="1">1</Publish>
+          <Publish Event="AddLocal" Value="FeatureA" Order="2">
+            <![CDATA[FEATUREX_CHECKED]]>
+          </Publish>
+        </Control>
+        <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+        <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)" >
+          <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+        </Control>
+      </Dialog>
+    </UI>
+  </Fragment>
+
+  <Fragment>
+    <UI Id="CustomUi">
+      <TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
+      <TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
+      <TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" />
+
+      <Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
+      <Property Id="WixUI_Mode" Value="Mondo" />
+
+      <DialogRef Id="ErrorDlg" />
+      <DialogRef Id="FatalError" />
+      <DialogRef Id="FilesInUse" />
+      <DialogRef Id="MsiRMFilesInUse" />
+      <DialogRef Id="PrepareDlg" />
+      <DialogRef Id="ProgressDlg" />
+      <DialogRef Id="ResumeDlg" />
+      <DialogRef Id="UserExit" />
+
+      <Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="CheckBoxDlg">1</Publish>
+      <Publish Dialog="CheckBoxDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
+      <Publish Dialog="CheckBoxDlg" Control="Next" Event="SpawnDialog" Value="CancelDlg">1</Publish>
+    </UI>
+  </Fragment>
+</Wix>
